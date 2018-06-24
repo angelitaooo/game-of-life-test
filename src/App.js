@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './App.css';
 
 class App extends Component {
   rows = 5;
@@ -103,7 +102,7 @@ class App extends Component {
       const validNeighbors = this.validateNeighbors(neighbors);
       const totalAliveNeighbors = this.countAliveCells(validNeighbors);
       this.gameRules(totalAliveNeighbors, x, y);
-    }, 100)
+    }, 1000);
     this.setState({intervalId: interval})
   }
 
