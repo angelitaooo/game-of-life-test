@@ -1,18 +1,32 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 class App extends Component {
+  rows = 5;
+  cols = 5;
+  constructor() {
+    super();
+    this.state = {
+
+    }
+  }
+
+  createGrid = (rows = this.rows, cols = this.cols) => {
+    const grid = [];
+    for(let i = 0; i < rows; i++) {
+      const rows = [];
+      for(let j = 0; j < cols; j++) {
+        rows.push(false);
+      }
+      grid.push(rows);
+    }
+    return grid;
+  }
   render() {
+    console.log(this.createGrid());
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        
       </div>
     );
   }
