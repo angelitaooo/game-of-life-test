@@ -8,7 +8,8 @@ class App extends Component {
     super();
     this.state = {
       grid: this.createGrid(),
-      initialLiveCells: [[0,0], [0,1], [1,0], [1,3], [2,1], [2,2]]
+      initialLiveCells: [[0,0], [0,1], [1,0], [1,3], [2,1], [2,2]],
+      intervalId: 0
     }
   }
 
@@ -47,10 +48,46 @@ class App extends Component {
     });
    } 
 
-  playGame = () => {
-    this.updateCells();
+   getRandomPosition = (min = 0, max = this.rows - 1) =>{
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+   }
+
+  checkNeighbors = (x, y) => {
+    return [
+      [x - 1, y - 1],
+      [x - 1, y],
+      [x - 1, y + 1],
+      [x, y - 1],
+      [x, y + 1],
+      [x + 1, y - 1],
+      [x + 1, y],
+      [x + 1, y + 1],
+    ]
   }
 
+  validateNeighbors = (neighbors) => {
+    return neighbors.filter(coord => {
+      return !(coord.includes(-1) || coord.includes(this.rows));
+    })
+  }
+
+
+  playGame = () => {
+    this.updateCells();
+    const interval = setInterval(()=> {
+      const x = this.getRandomPosition();
+      const y = this.getRandomPosition();
+      console.log(x, y);
+      const neighbors = this.checkNeighbors(x, y);
+      const validNeighbors = this.validateNeighbors(neighbors);
+      console.log(validNeighbors);
+    }, 1000)
+    this.setState({intervalId: interval})
+  }
+
+  stopGame = () => {
+    clearInterval(this.state.intervalId);
+  }
 
 
 
@@ -61,6 +98,7 @@ class App extends Component {
           <tbody>{this.printGrid()}</tbody>
         </table>
         <button onClick={this.playGame}>Play</button>
+        <button onClick={this.stopGame}>Stop</button>
       </div>
     );
   }
