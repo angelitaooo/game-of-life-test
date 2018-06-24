@@ -70,6 +70,7 @@ class App extends Component {
       return !(coord.includes(-1) || coord.includes(this.rows));
     })
   }
+
   countAliveCells = (neighbors) => {
     const aliveNeighbors = neighbors.filter(neighbor => {
       const x = neighbor[0];
@@ -79,18 +80,30 @@ class App extends Component {
     return aliveNeighbors.length;
   }
 
+  gameRules = (totalAliveNeighbors, x, y) => {
+    const cell = this.state.grid[x][y];
+    if( cell === true && totalAliveNeighbors < 2) {
+      this.toggleStateOfCells(x, y);
+    }
+    if( cell === true && totalAliveNeighbors > 3) {
+      this.toggleStateOfCells(x, y);
+    }
+    if(cell === false && totalAliveNeighbors === 3){
+      this.toggleStateOfCells(x, y);
+    }
+  }
+
 
   playGame = () => {
     this.updateCells();
     const interval = setInterval(()=> {
       const x = this.getRandomPosition();
       const y = this.getRandomPosition();
-      console.log(x, y);
       const neighbors = this.checkNeighbors(x, y);
       const validNeighbors = this.validateNeighbors(neighbors);
       const totalAliveNeighbors = this.countAliveCells(validNeighbors);
-      console.log(totalAliveNeighbors);
-    }, 1000)
+      this.gameRules(totalAliveNeighbors, x, y);
+    }, 100)
     this.setState({intervalId: interval})
   }
 
