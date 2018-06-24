@@ -7,7 +7,8 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      grid: this.createGrid()
+      grid: this.createGrid(),
+      initialLiveCells: [[0,0], [0,1], [1,0], [1,3], [2,1], [2,2]]
     }
   }
 
@@ -31,13 +32,35 @@ class App extends Component {
       return <tr key={rowKey}>{cell}</tr>;
     })
   }
+
+  toggleStateOfCells = (x, y) => {
+    const newGrid = [...this.state.grid];
+    newGrid[x][y] = !newGrid[x][y];
+    this.setState({grid: newGrid});
+  }
+
+  updateCells = () => {
+    this.state.initialLiveCells.forEach(cell => {
+      const x = cell[0];
+      const y = cell[1];
+      this.toggleStateOfCells(x, y);
+    });
+   } 
+
+  playGame = () => {
+    this.updateCells();
+  }
+
+
+
+
   render() {
-    console.log(this.createGrid());
     return (
       <div className="App">
         <table>
           <tbody>{this.printGrid()}</tbody>
         </table>
+        <button onClick={this.playGame}>Play</button>
       </div>
     );
   }
