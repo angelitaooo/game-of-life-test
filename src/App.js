@@ -7,7 +7,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-
+      grid: this.createGrid()
     }
   }
 
@@ -22,11 +22,22 @@ class App extends Component {
     }
     return grid;
   }
+
+  printGrid = () => {
+    return this.state.grid.map((rows, rowKey) => {
+      const cell = rows.map((col, colKey) => {
+        return <td key={colKey}>{col ? 1 : 0}</td>;
+      })
+      return <tr key={rowKey}>{cell}</tr>;
+    })
+  }
   render() {
     console.log(this.createGrid());
     return (
       <div className="App">
-        
+        <table>
+          <tbody>{this.printGrid()}</tbody>
+        </table>
       </div>
     );
   }
